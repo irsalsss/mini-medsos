@@ -112,8 +112,18 @@ export const MainProvider = (props) => {
     }
   }
 
-  const handleSubmitComment = () => {
+  const onSubmitComment = () => {
     console.log('hehe')
+  }
+
+  const onDeleteComment = (data) => {
+    console.log('qwe', data)
+    console.log('com', comments)
+  }
+
+  const onUpdateComment = (data) => {
+    console.log('asd', data)
+    console.log('com', comments)
   }
 
   useEffect(() => {
@@ -135,7 +145,7 @@ export const MainProvider = (props) => {
         onChangeActiveUser,
         _getAlbumsByUserId, _getPostsByUserId,
         _getPhotosByAlbumId, _getCommentsByPostId,
-        handleSubmitComment,
+        onSubmitComment, onUpdateComment, onDeleteComment,
       }}
     />
   )

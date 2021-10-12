@@ -11,7 +11,7 @@ const PostDetailPage = () => {
   const {
     comments, posts,
     _getCommentsByPostId, _getPostsByUserId,
-    handleSubmitComment,
+    onSubmitComment, onUpdateComment, onDeleteComment,
   } = useMainContext();
 
   const { userId, postId } = urlToParams(location.search);
@@ -36,7 +36,9 @@ const PostDetailPage = () => {
           <PostCard
             postData={postData[0]}
             comments={comments[postId]}
-            handleSubmitComment={handleSubmitComment}
+            onSubmitComment={onSubmitComment}
+            onUpdateComment={onUpdateComment}
+            onDeleteComment={onDeleteComment}
           />
         </div>
       )}

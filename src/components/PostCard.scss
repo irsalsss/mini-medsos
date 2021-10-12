@@ -1,0 +1,12 @@
+.inline-comment:hover {
+  .comment-action {
+    display: block;
+  }
+}
+
+.comment-action {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 0;
+}
