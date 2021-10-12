@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
-import { getAlbumsByUserId, getPostsByUserId, getUsers } from '../client/MainApi';
+import { getAlbumsByUserId, getPhotosByAlbumId, getPostsByUserId, getUsers } from '../client/MainApi';
 import { errorNotif } from '../utils/Utils';
 
 const MainContext = createContext(null);
@@ -16,7 +16,7 @@ export const MainProvider = (props) => {
   const [users, setUsers] = useState([]);
   const [albums, setAlbums] = useState([]);
   const [posts, setPosts] = useState([]);
-
+  const [photos, setPhotos] = useState([]);
 
   const handleActiveNavbar = (e) => {
     setActiveNavbar(e.key);
@@ -61,6 +61,18 @@ export const MainProvider = (props) => {
     }
   }
 
+  const _getPhotosByAlbumId = async(albumId) => {
+    try {
+      const { data } = await getPhotosByAlbumId(albumId);
+      if (data.length) {
+        setPhotos(data);
+      }
+    } catch (error) {
+      console.error('photos-error', error);
+      errorNotif('Photos | Something went wrong')
+    }
+  }
+
   const _getUsers = async() => {
     try {
       const { data } = await getUsers();
@@ -83,13 +95,14 @@ export const MainProvider = (props) => {
     <MainContext.Provider 
       {...props}
       value={{
-        users, albums, posts,
+        users, albums, posts, photos,
         activeUser,
         activeNavbar, handleActiveNavbar,
         filterOption, onChangeFilterOption,
         onClickCard,
         onChangeActiveUser,
-        _getAlbumsByUserId, _getPostsByUserId
+        _getAlbumsByUserId, _getPostsByUserId,
+        _getPhotosByAlbumId,
       }}
     />
   )

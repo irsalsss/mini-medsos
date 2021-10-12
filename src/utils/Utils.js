@@ -1,4 +1,5 @@
 import { notification } from 'antd';
+import qs from 'qs';
 
 export const errorNotif = (message) => {
   notification['error']({
@@ -13,3 +14,7 @@ export const successNotif = (message) => {
     description: message,
   });
 };
+
+export const urlToParams = (url) => {
+  return qs.parse(url, { ignoreQueryPrefix: true })
+}

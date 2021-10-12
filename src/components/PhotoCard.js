@@ -1,13 +1,15 @@
 import React from 'react';
 import { Card, Typography } from 'antd';
+import PropTypes from "prop-types";
 import './PhotoCard.scss';
 
 const { Text, Link } = Typography;
 
 const PhotoCard = ({ 
   photoData, 
-  onClickUserInfo, 
   userData,
+  onClickUserInfo,
+  onClickDetailPhoto
 }) => {
 
   return (
@@ -16,9 +18,11 @@ const PhotoCard = ({
       style={{ position: 'relative', width: 400, marginTop: 32 }}
       cover={
         <img
+          onClick={onClickDetailPhoto}
           loading='lazy'
           alt={`photo-${photoData.id}`}
           src={photoData.url}
+          className='cursor-pointer'
         />
       }
     >
@@ -40,5 +44,19 @@ const PhotoCard = ({
     </Card>
   )
 }
+
+PhotoCard.propTypes = {
+  photoData: PropTypes.object,
+  userData: PropTypes.object,
+  onClickUserInfo: PropTypes.func,
+  onClickDetailPhoto: PropTypes.func,
+}
+
+PhotoCard.defaultProps = {
+  photoData: {},
+  userData: {},
+  onClickUserInfo: () => {},
+  onClickDetailPhoto: () => {},
+};
 
 export default PhotoCard
