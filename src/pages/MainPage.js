@@ -12,19 +12,29 @@ const { Text } = Typography;
 const MainPage = () => {
   const {
     users, albums, posts,
+    activeUser, onChangeActiveUser,
     onClickCard,
-    filterOption, onChangeFilterOption, onFilterByName
+    filterOption, onChangeFilterOption,
+    _getAlbumsByUserId, _getPostsByUserId,
   } = useMainContext();
 
-  useEffect(() => {
+  const userData = users?.[activeUser - 1]
 
-  }, [])
+  useEffect(() => {
+    _getAlbumsByUserId();
+    _getPostsByUserId();
+  }, [activeUser])
   
   return (
     <div className='container-main-page'>
       <div className='container-filter pt-2 px-3'>
         {filterOption === 'user' && users && (
-          <InputSelect defaultValue={1} unique='id' options={users} onChange={onFilterByName} />
+          <InputSelect 
+            defaultValue={1}
+            unique='id'
+            options={users}
+            onChange={onChangeActiveUser}
+          />
         )}
 
         <div className='wrapper-filter'>
@@ -32,14 +42,16 @@ const MainPage = () => {
           <RadioGroup options={FILTER_OPTIONS} onChange={onChangeFilterOption} value={filterOption} />
         </div>
       </div>
-
-      <Text className='pl-3 pb-3'>List of albums</Text>
+      
+      <div className='mt-2 d-flex justify-center'>
+        <Text strong className='pb-3'>List of albums {userData?.name || ''}</Text>
+      </div>
       <div className='d-flex justify-center flex-wrap py-2'>
         {users && albums && albums.map((v) => (
           <div key={v.id} className='px-4 py-2'>
             <AlbumCard 
               albumData={v}
-              userData={users?.[v.userId - 1]}
+              userData={userData}
               onClickAlbum={() => onClickCard('album', v.id)} 
               onClickUser={() => onClickCard('user', v.userId)} 
             />
@@ -51,7 +63,9 @@ const MainPage = () => {
         <Empty className='pt-6' image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}
 
-      <Text className='py-3 pl-3'>List of posts</Text>
+      <div className='mt-3 d-flex justify-center'>
+        <Text strong className='py-3'>List of posts {userData?.name || ''}</Text>
+      </div>
       <div className='d-flex justify-center flex-wrap py-2'>
         {users && posts && posts.map((v) => (
           <div key={v.id} className='px-4 py-2'>
