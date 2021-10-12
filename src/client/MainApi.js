@@ -15,3 +15,7 @@ export const getPostsByUserId = (id) => {
 export const getPhotosByAlbumId = (id) => {
   return client(`https://jsonplaceholder.typicode.com/photos?albumId=${id}`);
 }
+
+export const getCommentsByPostId = (id) => {
+  return client(`https://jsonplaceholder.typicode.com/comments?postId=${id}`);
+}

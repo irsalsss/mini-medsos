@@ -1,21 +1,25 @@
 import React from 'react';
 import { Typography, Card } from 'antd';
 import PropTypes from "prop-types";
+import CommentBox from './CommentBox';
 
 const { Text, Link } = Typography;
 
-const PostCard = ({ postData, onClick }) => {
+const PostCard = ({ postData, onClick, comments, handleSubmitComment }) => {
   return (
     <Card
       hoverable
       style={{ width: 650 }}
     >
-      <Link
-        onClick={onClick}
-        style={{ position: 'absolute', top: 16, right: 16 }}
-      >
-        View detail
-      </Link>
+      {onClick && (
+        <Link
+          onClick={onClick}
+          style={{ position: 'absolute', top: 16, right: 16 }}
+        >
+          View detail
+        </Link>
+      )}
+
       <div className='flex-column d-flex'>
         <Text type="secondary">Post title: </Text>
         <Text style={{ textTransform: 'capitalize' }} ellipsis>
@@ -29,18 +33,34 @@ const PostCard = ({ postData, onClick }) => {
           {postData.body}
         </Text>
       </div>
+
+      <div className='pt-2 flex-column d-flex'>
+        {comments && comments.map((v) => (
+          <div className='pt-2' key={v.id}>
+            <Text strong>{v.email}</Text>
+            <Text className='pl-2'>{v.body}</Text>
+          </div>
+        ))}
+      </div>
+
+      <CommentBox handleSubmitComment={handleSubmitComment} />
+
     </Card>
   )
 };
 
 PostCard.propTypes = {
   postData: PropTypes.object,
+  comments: PropTypes.array,
   onClick: PropTypes.func,
+  handleSubmitComment: PropTypes.func,
 }
 
 PostCard.defaultProps = {
   postData: {},
-  onClick: () => {},
+  comments: [],
+  onClick: null,
+  handleSubmitComment: () => {},
 };
 
 export default PostCard

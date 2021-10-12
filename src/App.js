@@ -11,6 +11,7 @@ const MainPage = lazy(() => import('./pages/MainPage'))
 const AlbumPage = lazy(() => import('./pages/AlbumPage'))
 const PhotoPage = lazy(() => import('./pages/PhotoPage'))
 const MyPostsPage = lazy(() => import('./pages/MyPostsPage'))
+const PostDetailPage = lazy(() => import('./pages/PostDetailPage'))
 const UserDetailPage = lazy(() => import('./pages/UserDetailPage'))
 const ErrorPage = lazy(() => import('./pages/ErrorPage'))
 const NotFound = lazy(() => import('./pages/NotFound'))
@@ -30,7 +31,8 @@ const App = () => {
                 <Route exact path={["/", "/main"]} component={MainPage} />
                 <Route exact path="/album/:albumId" component={AlbumPage} />
                 <Route exact path="/photo" component={PhotoPage} />
-                <Route exact path="/posts/:userId" component={MyPostsPage} />
+                <Route exact path="/posts" component={PostDetailPage} />
+                <Route exact path="/my-posts" component={MyPostsPage} />
                 <Route exact path="/user/:userId" component={UserDetailPage} />
                 <Route component={NotFound} />
               </Switch>

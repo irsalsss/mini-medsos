@@ -73,7 +73,7 @@ const MainPage = () => {
           <div key={v.id} className='px-4 py-2'>
             <PostCard 
               postData={v}
-              onClick={() => history.push(`/posts/${v.userId}`)}
+              onClick={() => history.push(`/posts?userId=${v.userId}&postId=${v.id}`)}
             />
           </div>
         ))}

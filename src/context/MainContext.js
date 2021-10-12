@@ -1,6 +1,13 @@
+import { cloneDeep } from 'lodash';
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
-import { getAlbumsByUserId, getPhotosByAlbumId, getPostsByUserId, getUsers } from '../client/MainApi';
+import { 
+  getAlbumsByUserId, 
+  getCommentsByPostId, 
+  getPhotosByAlbumId, 
+  getPostsByUserId, 
+  getUsers 
+} from '../client/MainApi';
 import { errorNotif } from '../utils/Utils';
 
 const MainContext = createContext(null);
@@ -15,8 +22,10 @@ export const MainProvider = (props) => {
 
   const [users, setUsers] = useState([]);
   const [albums, setAlbums] = useState([]);
-  const [posts, setPosts] = useState([]);
   const [photos, setPhotos] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
+  const [comments, setComments] = useState({});
 
   const handleActiveNavbar = (e) => {
     setActiveNavbar(e.key);
@@ -33,7 +42,6 @@ export const MainProvider = (props) => {
   }
 
   const onChangeActiveUser = (value) => {
-    console.log('value', value)
     setActiveUser(value);
   }
 
@@ -49,9 +57,9 @@ export const MainProvider = (props) => {
     }
   }
 
-  const _getPostsByUserId = async() => {
+  const _getPostsByUserId = async(id) => {
     try {
-      const { data } = await getPostsByUserId(activeUser);
+      const { data } = await getPostsByUserId(id || activeUser);
       if (data.length) {
         setPosts(data);
       }
@@ -70,6 +78,20 @@ export const MainProvider = (props) => {
     } catch (error) {
       console.error('photos-error', error);
       errorNotif('Photos | Something went wrong')
+    }
+  }
+
+  const _getCommentsByPostId = async(postId) => {
+    try {
+      const temp = cloneDeep(comments);
+      const { data } = await getCommentsByPostId(postId);
+      if (data.length) {
+        temp[postId] = data
+        setComments(temp);
+      }
+    } catch (error) {
+      console.error('comments-error', error);
+      errorNotif('Comments | Something went wrong')
     }
   }
 
@@ -95,14 +117,15 @@ export const MainProvider = (props) => {
     <MainContext.Provider 
       {...props}
       value={{
-        users, albums, posts, photos,
+        users, albums, photos, comments,
+        myPosts, posts,
         activeUser,
         activeNavbar, handleActiveNavbar,
         filterOption, onChangeFilterOption,
         onClickCard,
         onChangeActiveUser,
         _getAlbumsByUserId, _getPostsByUserId,
-        _getPhotosByAlbumId,
+        _getPhotosByAlbumId, _getCommentsByPostId,
       }}
     />
   )
