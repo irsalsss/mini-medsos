@@ -1,0 +1,13 @@
+.wrapper-user {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper-album {
+  @extend .wrapper-user;
+  margin-bottom: 1rem;
+}
+
+.ant-card-hoverable:hover {
+  cursor: default !important;
+}
