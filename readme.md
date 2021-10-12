@@ -1,3 +1,4 @@
 - Since I really familiar with antd and to save much time, I decided to use it.
 - List of users is part of filter.
-- Each user's photos can be seen by clicking on the user full name.
+- Each detail user information can be seen by clicking on the user full name.
+- Each detail photo information can be seen by clicking on the image.
