@@ -37,9 +37,9 @@ export const MainProvider = (props) => {
     setActiveUser(value);
   }
 
-  const _getAlbumsByUserId = async() => {
+  const _getAlbumsByUserId = async(id) => {
     try {
-      const { data } = await getAlbumsByUserId(activeUser);
+      const { data } = await getAlbumsByUserId(id || activeUser);
       if (data.length) {
         setAlbums(data);
       }
