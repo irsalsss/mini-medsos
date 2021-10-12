@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { useHistory } from "react-router-dom";
 
 import PhotoCard from '../components/PhotoCard';
 import { useMainContext } from '../context/MainContext';
 
 const AlbumPage = () => {
-  const history = useHistory();
   const { albumId } = useParams();
-  const { users, albums, photos, _getPhotosByAlbumId } = useMainContext();
+  const { users, albums, photos, _getPhotosByAlbumId, onRedirect } = useMainContext();
 
   const userIndex = Math.floor((albumId - 1) / 10);
 
@@ -23,8 +21,8 @@ const AlbumPage = () => {
           key={v.id}
           photoData={v}
           userData={users[userIndex]}
-          onClickUserInfo={() => history.push(`/user/${users[userIndex].id}`)}
-          onClickDetailPhoto={() => history.push(`/photo?userId=${users[userIndex].id}&albumId=${v.albumId}&photoId=${v.id}`)}
+          onClickUserInfo={() => onRedirect(`/user/${users[userIndex].id}`)}
+          onClickDetailPhoto={() => onRedirect(`/photo?userId=${users[userIndex].id}&albumId=${v.albumId}&photoId=${v.id}`)}
         />
       ))}
     </div>

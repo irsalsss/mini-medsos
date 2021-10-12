@@ -34,16 +34,20 @@ const PostCard = ({ postData, onClick, comments, handleSubmitComment }) => {
         </Text>
       </div>
 
-      <div className='pt-2 flex-column d-flex'>
-        {comments && comments.map((v) => (
-          <div className='pt-2' key={v.id}>
-            <Text strong>{v.email}</Text>
-            <Text className='pl-2'>{v.body}</Text>
-          </div>
-        ))}
-      </div>
+      {comments.length > 0 && (
+        <div className='pt-2 flex-column d-flex'>
+          {comments.map((v) => (
+            <div className='pt-2' key={v.id}>
+              <Text strong>{v.email}</Text>
+              <Text className='pl-2'>{v.body}</Text>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <CommentBox handleSubmitComment={handleSubmitComment} />
+      {handleSubmitComment && (
+        <CommentBox handleSubmitComment={handleSubmitComment} />
+      )}
 
     </Card>
   )
@@ -60,7 +64,7 @@ PostCard.defaultProps = {
   postData: {},
   comments: [],
   onClick: null,
-  handleSubmitComment: () => {},
+  handleSubmitComment: null,
 };
 
 export default PostCard

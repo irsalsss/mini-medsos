@@ -10,7 +10,8 @@ const PostDetailPage = () => {
   const [postData, setPostData] = useState([]);
   const {
     comments, posts,
-    _getCommentsByPostId, _getPostsByUserId
+    _getCommentsByPostId, _getPostsByUserId,
+    handleSubmitComment,
   } = useMainContext();
 
   const { userId, postId } = urlToParams(location.search);
@@ -35,6 +36,7 @@ const PostDetailPage = () => {
           <PostCard
             postData={postData[0]}
             comments={comments[postId]}
+            handleSubmitComment={handleSubmitComment}
           />
         </div>
       )}

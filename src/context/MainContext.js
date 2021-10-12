@@ -37,6 +37,11 @@ export const MainProvider = (props) => {
     setActiveNavbar(type);
   }
 
+  const onRedirect = (url) => {
+    history.push(url);
+    setActiveNavbar('');
+  }
+
   const onChangeFilterOption = (e) => {
     setFilterOption(e.target.value)
   }
@@ -107,6 +112,10 @@ export const MainProvider = (props) => {
     }
   }
 
+  const handleSubmitComment = () => {
+    console.log('hehe')
+  }
+
   useEffect(() => {
     const curr = pathname === '/' ? 'main' : pathname.replace('/', '');
     setActiveNavbar(curr);
@@ -122,10 +131,11 @@ export const MainProvider = (props) => {
         activeUser,
         activeNavbar, handleActiveNavbar,
         filterOption, onChangeFilterOption,
-        onClickCard,
+        onClickCard, onRedirect,
         onChangeActiveUser,
         _getAlbumsByUserId, _getPostsByUserId,
         _getPhotosByAlbumId, _getCommentsByPostId,
+        handleSubmitComment,
       }}
     />
   )

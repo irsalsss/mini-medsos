@@ -8,7 +8,7 @@ import { urlToParams } from '../utils/Utils';
 const PhotoPage = () => {
   const location = useLocation();
   const [photoData, setPhotoData] = useState([]);
-  const { users, photos, _getPhotosByAlbumId } = useMainContext();
+  const { users, photos, onRedirect, _getPhotosByAlbumId } = useMainContext();
   const { userId, albumId, photoId } = urlToParams(location.search);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const PhotoPage = () => {
         <PhotoCard
           photoData={photoData[0]}
           userData={users[userId]}
-          onClickUserInfo={() => history.push(`/user/${users[userId].id}`)}
+          onClickUserInfo={() => onRedirect(`/user/${users[userId].id}`)}
         />
       )}
     </div>

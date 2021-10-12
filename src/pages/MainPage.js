@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Empty, Typography } from 'antd';
-import { useHistory } from "react-router-dom";
 
 import AlbumCard from '../components/AlbumCard'
 import { useMainContext } from '../context/MainContext';
@@ -13,11 +12,10 @@ import CenterTitle from '../components/CenterTitle';
 const { Text } = Typography;
 
 const MainPage = () => {
-  const history = useHistory();
   const {
     users, albums, posts,
     activeUser, onChangeActiveUser,
-    onClickCard,
+    onClickCard, onRedirect,
     filterOption, onChangeFilterOption,
     _getAlbumsByUserId, _getPostsByUserId,
   } = useMainContext();
@@ -73,7 +71,7 @@ const MainPage = () => {
           <div key={v.id} className='px-4 py-2'>
             <PostCard 
               postData={v}
-              onClick={() => history.push(`/posts?userId=${v.userId}&postId=${v.id}`)}
+              onClick={() => onRedirect(`/posts?userId=${v.userId}&postId=${v.id}`)}
             />
           </div>
         ))}
