@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react';
 import { Empty, Typography } from 'antd';
+import { useHistory } from "react-router-dom";
+
 import AlbumCard from '../components/AlbumCard'
 import { useMainContext } from '../context/MainContext';
 import { FILTER_OPTIONS } from '../constant/main'; 
 import InputSelect from '../components/InputSelect';
 import RadioGroup from '../components/RadioGroup';
 import PostCard from '../components/PostCard';
+import CenterTitle from '../components/CenterTitle';
 
 const { Text } = Typography;
 
 const MainPage = () => {
+  const history = useHistory();
   const {
     users, albums, posts,
     activeUser, onChangeActiveUser,
@@ -43,9 +47,8 @@ const MainPage = () => {
         </div>
       </div>
       
-      <div className='mt-2 d-flex justify-center'>
-        <Text strong className='pb-3'>List of albums {userData?.name || ''}</Text>
-      </div>
+      <CenterTitle title={`List of albums ${userData?.name || ''}`} />
+
       <div className='d-flex justify-center flex-wrap py-2'>
         {users && albums && albums.map((v) => (
           <div key={v.id} className='px-4 py-2'>
@@ -63,13 +66,15 @@ const MainPage = () => {
         <Empty className='pt-6' image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}
 
-      <div className='mt-3 d-flex justify-center'>
-        <Text strong className='py-3'>List of posts {userData?.name || ''}</Text>
-      </div>
+      <CenterTitle title={`List of posts ${userData?.name || ''}`} />
+
       <div className='d-flex justify-center flex-wrap py-2'>
         {users && posts && posts.map((v) => (
           <div key={v.id} className='px-4 py-2'>
-            <PostCard postData={v} />
+            <PostCard 
+              postData={v}
+              onClick={() => history.push(`/posts/${v.userId}`)}
+            />
           </div>
         ))}
       </div>
