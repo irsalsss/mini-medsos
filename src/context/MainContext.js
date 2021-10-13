@@ -30,6 +30,9 @@ export const MainProvider = (props) => {
 
   const [currentModalOpen, setCurrentModalOpen] = useState({});
 
+  // to count how many time we've created a post and convert it to id
+  const [postCounter, setPostCounter] = useState(1);
+
   const handleActiveNavbar = (e) => {
     setActiveNavbar(e.key);
     history.push(`/${e.key}`);
@@ -165,7 +168,7 @@ export const MainProvider = (props) => {
       const { data } = await createPost(newBody);
       if (data.id) {
         successNotif('Success create a post');
-        newBody.id = currArr.length === 10 ? data.id : currArr[currArr.length - 1].id + 1;
+        newBody.id = data.id + postCounter;
         temp[userId].push(newBody);
         setPosts(temp);
       }
@@ -184,6 +187,7 @@ export const MainProvider = (props) => {
       
     }
 
+    setPostCounter((prev) => prev + 1);
     setCurrentModalOpen({});
   }
 
