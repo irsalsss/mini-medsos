@@ -32,7 +32,7 @@ const MainPage = () => {
       <div className='container-filter pt-2 px-3'>
         {filterOption === 'user' && users && (
           <InputSelect 
-            defaultValue={1}
+            defaultValue={activeUser}
             unique='id'
             options={users}
             onChange={onChangeActiveUser}
