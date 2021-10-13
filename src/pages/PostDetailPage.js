@@ -35,7 +35,10 @@ const PostDetailPage = () => {
   }, [posts])
 
   return (
-    <div className='d-flex justify-center flex-wrap py-2'>
+    <div className='d-flex justify-center items-center flex-column flex-wrap py-2'>
+      {postData.length === 0 && (
+        <p>Since its not really updated on the server, so the data is missing</p>
+      )}
       {comments && postData && (
         <div className='px-4 py-2'>
           <PostCard
