@@ -20,7 +20,7 @@ const MainPage = () => {
     filterOption, onChangeFilterOption,
     _getAlbumsByUserId, _getPostsByUserId,
     currentModalOpen, setCurrentModalOpen,
-    onSubmitPost
+    onSubmitPost, onDeletePost
   } = useMainContext();
 
   const userData = users?.[activeUser - 1]
@@ -85,7 +85,7 @@ const MainPage = () => {
           <div key={v.id} className='px-4 py-2'>
             <PostCard 
               postData={v}
-              onClickDelete={() => setCurrentModalOpen({ data: v, userData, type: 'modalPost', action: 'delete' })} 
+              onClickDelete={() => onDeletePost(v)} 
               onClickEdit={() => setCurrentModalOpen({ data: v, userData, type: 'modalPost', action: 'edit' })}
               onClick={() => onRedirect(`/posts?userId=${v.userId}&postId=${v.id}`)}
             />

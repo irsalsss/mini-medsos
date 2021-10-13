@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext, createContext } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import { 
   createPost,
+  deletePost,
   editPost,
   getAlbumsByUserId, 
   getCommentsByPostId, 
@@ -176,6 +177,7 @@ export const MainProvider = (props) => {
         newBody.id = data.id + postCounter;
         temp[userId].push(newBody);
         setPosts(temp);
+        setPostCounter((prev) => prev + 1);
       }
     } catch (error) {
       console.error('create-post-error', error)
@@ -205,16 +207,28 @@ export const MainProvider = (props) => {
     }
   }
 
+  const onDeletePost = async(body) => {
+    try {
+      const userId = body.userId;
+      const temp = cloneDeep(posts);
+      const { data } = await deletePost(body.id);
+      successNotif('Success delete a post');
+      temp[userId] = temp[userId].filter((v) => v.id !== body.id);
+      setPosts(temp);
+      setCurrentModalOpen({});
+    } catch (error) {
+      console.error('delete-post-error', error)
+      errorNotif('Delete post | Something went wrong')
+    }
+  }
+
   const onSubmitPost = async(body, userData, type) => {
     if (type === 'create') {
       await onCreatePost(body, userData);
     } else if (type === 'edit') {
       await onEditPost(body);
-    } else if (type === 'delete') {
-      
     }
 
-    setPostCounter((prev) => prev + 1);
     setCurrentModalOpen({});
   }
 
@@ -239,7 +253,7 @@ export const MainProvider = (props) => {
         _getPhotosByAlbumId, _getCommentsByPostId,
         onSubmitComment, onUpdateComment, onDeleteComment,
         currentModalOpen, setCurrentModalOpen,
-        onSubmitPost,
+        onSubmitPost, onDeletePost,
         postCounter
       }}
     />
