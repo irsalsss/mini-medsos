@@ -19,3 +19,7 @@ export const getPhotosByAlbumId = (id) => {
 export const getCommentsByPostId = (id) => {
   return client(`https://jsonplaceholder.typicode.com/comments?postId=${id}`);
 }
+
+export const postCommentsByPostId = (body) => {
+  return client(`https://jsonplaceholder.typicode.com/comments`, { method: 'POST', body: JSON.stringify(body) });
+}

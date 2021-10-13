@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 
 import PostCard from '../components/PostCard';
+import ModalUpdateComment from '../components/ModalUpdateComment';
 import { useMainContext } from '../context/MainContext';
 import { urlToParams } from '../utils/Utils';
 
@@ -12,6 +13,7 @@ const PostDetailPage = () => {
     comments, posts,
     _getCommentsByPostId, _getPostsByUserId,
     onSubmitComment, onUpdateComment, onDeleteComment,
+    currentModalOpen, setCurrentModalOpen,
   } = useMainContext();
 
   const { userId, postId } = urlToParams(location.search);
@@ -36,12 +38,20 @@ const PostDetailPage = () => {
           <PostCard
             postData={postData[0]}
             comments={comments[postId]}
-            onSubmitComment={onSubmitComment}
-            onUpdateComment={onUpdateComment}
+            onSubmitComment={(data) => onSubmitComment(data, postId)}
+            onUpdateComment={(data) => setCurrentModalOpen({ data, type: 'updateComment'})}
             onDeleteComment={onDeleteComment}
           />
         </div>
       )}
+
+      <ModalUpdateComment
+        key='updateComment'
+        isOpen={currentModalOpen?.type === 'updateComment'}
+        onClose={() => setCurrentModalOpen({})}
+        onSubmit={(data, comment) => onUpdateComment(data, comment)}
+        data={currentModalOpen?.data}
+      />
     </div>
   )
 }

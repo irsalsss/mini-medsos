@@ -6,7 +6,8 @@ import {
   getCommentsByPostId, 
   getPhotosByAlbumId, 
   getPostsByUserId, 
-  getUsers 
+  getUsers, 
+  postCommentsByPostId
 } from '../client/MainApi';
 import { errorNotif } from '../utils/Utils';
 
@@ -26,6 +27,8 @@ export const MainProvider = (props) => {
   const [posts, setPosts] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
   const [comments, setComments] = useState({});
+
+  const [currentModalOpen, setCurrentModalOpen] = useState({});
 
   const handleActiveNavbar = (e) => {
     setActiveNavbar(e.key);
@@ -112,18 +115,39 @@ export const MainProvider = (props) => {
     }
   }
 
-  const onSubmitComment = () => {
-    console.log('hehe')
+  const onSubmitComment = async(value, postId) => {
+    const temp = cloneDeep(comments);
+    const currArr = temp[postId];
+    const body = {
+      body: value,
+      postId: Number(postId),
+      email: 'irsal@hehehe.com',
+      id: currArr[currArr.length - 1].id + 1
+    }
+    try {
+      const { data } = await postCommentsByPostId(body);
+      if (data.id) {
+        temp[postId].push(body);
+        setComments(temp);
+      }
+    } catch (error) {
+      console.error('submit-comment-error', error)
+      errorNotif('Submit Comment | Something went wrong')
+    }
   }
 
   const onDeleteComment = (data) => {
-    console.log('qwe', data)
-    console.log('com', comments)
+    const temp = cloneDeep(comments);
+    temp[data.postId] = temp[data.postId].filter((v) => v.id !== data.id);
+    setComments(temp);
   }
 
-  const onUpdateComment = (data) => {
-    console.log('asd', data)
-    console.log('com', comments)
+  const onUpdateComment = (data, comment) => {
+    const temp = cloneDeep(comments);
+    const index = temp[data.postId].findIndex((v) => v.id === data.id);
+    temp[data.postId][index].body = comment;
+    setComments(temp);
+    setCurrentModalOpen({});
   }
 
   useEffect(() => {
@@ -146,6 +170,7 @@ export const MainProvider = (props) => {
         _getAlbumsByUserId, _getPostsByUserId,
         _getPhotosByAlbumId, _getCommentsByPostId,
         onSubmitComment, onUpdateComment, onDeleteComment,
+        currentModalOpen, setCurrentModalOpen,
       }}
     />
   )

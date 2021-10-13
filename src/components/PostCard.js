@@ -44,16 +44,18 @@ const PostCard = ({ postData, onClick, comments, onSubmitComment, onUpdateCommen
               <Text strong>{v.email}</Text>
               <Text className='pl-2'>{v.body}</Text>
 
-              <div className='comment-action'>
-                <EditOutlined 
-                  onClick={() => onUpdateComment(v)}
-                  style={{ cursor: 'pointer', paddingRight: 8 }} 
-                />
-                <DeleteOutlined 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => onDeleteComment(v)}
-                />
-              </div>
+              {v.email === 'irsal@hehehe.com' && (
+                <div className='comment-action'>
+                  <EditOutlined 
+                    onClick={() => onUpdateComment(v)}
+                    style={{ cursor: 'pointer', paddingRight: 8 }} 
+                  />
+                  <DeleteOutlined 
+                    onClick={() => onDeleteComment(v)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>

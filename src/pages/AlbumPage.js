@@ -6,7 +6,13 @@ import { useMainContext } from '../context/MainContext';
 
 const AlbumPage = () => {
   const { albumId } = useParams();
-  const { users, albums, photos, _getPhotosByAlbumId, onRedirect } = useMainContext();
+  const {
+    users, 
+    albums, 
+    photos, 
+    _getPhotosByAlbumId, 
+    onRedirect 
+  } = useMainContext();
 
   const userIndex = Math.floor((albumId - 1) / 10);
 
