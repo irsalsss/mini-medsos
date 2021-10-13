@@ -19,27 +19,30 @@ const PostDetailPage = () => {
   const { userId, postId } = urlToParams(location.search);
 
   useEffect(() => {
-    _getPostsByUserId(userId);
+    if (!posts[userId]) {
+      _getPostsByUserId(userId);
+    }
+
     if (!comments[postId]) {
       _getCommentsByPostId(postId)
     }
   }, [])
 
   useEffect(() => {
-    if (posts.length) {
-      setPostData(posts.filter((v) => v.id == postId))
+    if (posts[userId]?.length) {
+      setPostData(posts[userId].filter((v) => v.id == postId))
     }
   }, [posts])
 
   return (
     <div className='d-flex justify-center flex-wrap py-2'>
-      {comments && posts && postData && (
+      {comments && postData && (
         <div className='px-4 py-2'>
           <PostCard
             postData={postData[0]}
             comments={comments[postId]}
             onSubmitComment={(data) => onSubmitComment(data, postId)}
-            onUpdateComment={(data) => setCurrentModalOpen({ data, type: 'updateComment'})}
+            onUpdateComment={(data) => setCurrentModalOpen({ data, type: 'updateComment' })}
             onDeleteComment={onDeleteComment}
           />
         </div>
@@ -49,7 +52,7 @@ const PostDetailPage = () => {
         key='updateComment'
         isOpen={currentModalOpen?.type === 'updateComment'}
         onClose={() => setCurrentModalOpen({})}
-        onSubmit={(data, comment) => onUpdateComment(data, comment)}
+        onSubmit={onUpdateComment}
         data={currentModalOpen?.data}
       />
     </div>

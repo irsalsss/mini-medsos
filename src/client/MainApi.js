@@ -23,3 +23,7 @@ export const getCommentsByPostId = (id) => {
 export const postCommentsByPostId = (body) => {
   return client(`https://jsonplaceholder.typicode.com/comments`, { method: 'POST', body: JSON.stringify(body) });
 }
+
+export const createPost = (body) => {
+  return client(`https://jsonplaceholder.typicode.com/posts`, { method: 'POST', body: JSON.stringify(body) });
+}

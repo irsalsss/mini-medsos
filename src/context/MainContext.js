@@ -2,6 +2,7 @@ import { cloneDeep } from 'lodash';
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import { 
+  createPost,
   getAlbumsByUserId, 
   getCommentsByPostId, 
   getPhotosByAlbumId, 
@@ -9,7 +10,7 @@ import {
   getUsers, 
   postCommentsByPostId
 } from '../client/MainApi';
-import { errorNotif } from '../utils/Utils';
+import { errorNotif, successNotif } from '../utils/Utils';
 
 const MainContext = createContext(null);
 
@@ -24,7 +25,7 @@ export const MainProvider = (props) => {
   const [users, setUsers] = useState([]);
   const [albums, setAlbums] = useState([]);
   const [photos, setPhotos] = useState([]);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState({});
   const [comments, setComments] = useState({});
 
   const [currentModalOpen, setCurrentModalOpen] = useState({});
@@ -66,9 +67,11 @@ export const MainProvider = (props) => {
 
   const _getPostsByUserId = async(id) => {
     try {
+      const temp = cloneDeep(posts);
       const { data } = await getPostsByUserId(id || activeUser);
       if (data.length) {
-        setPosts(data);
+        temp[id || activeUser] = data
+        setPosts(temp);
       }
     } catch (error) {
       console.error('posts-error', error)
@@ -115,23 +118,23 @@ export const MainProvider = (props) => {
   }
 
   const onSubmitComment = async(value, postId) => {
-    const temp = cloneDeep(comments);
-    const currArr = temp[postId];
-    const body = {
-      body: value,
-      postId: Number(postId),
-      email: 'irsal@hehehe.com',
-      id: currArr[currArr.length - 1].id + 1
-    }
     try {
+      const temp = cloneDeep(comments);
+      const currArr = temp[postId];
+      const body = {
+        body: value,
+        postId: Number(postId),
+        email: 'irsal@hehehe.com',
+        id: currArr[currArr.length - 1].id + 1
+      }
       const { data } = await postCommentsByPostId(body);
       if (data.id) {
         temp[postId].push(body);
         setComments(temp);
       }
     } catch (error) {
-      console.error('submit-comment-error', error)
-      errorNotif('Submit Comment | Something went wrong')
+      console.error('create-comment-error', error)
+      errorNotif('Create Comment | Something went wrong')
     }
   }
 
@@ -146,6 +149,41 @@ export const MainProvider = (props) => {
     const index = temp[data.postId].findIndex((v) => v.id === data.id);
     temp[data.postId][index].body = comment;
     setComments(temp);
+    setCurrentModalOpen({});
+  }
+  
+  const onCreatePost = async (body, userData) => {
+    try {
+      const userId = userData.id
+      const temp = cloneDeep(posts);
+      const currArr = temp[userId];
+      const newBody = { 
+        ...body, 
+        userId, 
+        id: currArr[currArr.length - 1].id + 1
+      }
+      const { data } = await createPost(newBody);
+      if (data.id) {
+        successNotif('Success create a post');
+        newBody.id = currArr.length === 10 ? data.id : currArr[currArr.length - 1].id + 1;
+        temp[userId].push(newBody);
+        setPosts(temp);
+      }
+    } catch (error) {
+      console.error('create-post-error', error)
+      errorNotif('Create post | Something went wrong')
+    }
+  }
+
+  const onSubmitPost = async(body, userData, type) => {
+    if (type === 'create') {
+      await onCreatePost(body, userData);
+    } else if (type === 'edit') {
+
+    } else if (type === 'delete') {
+      
+    }
+
     setCurrentModalOpen({});
   }
 
@@ -170,6 +208,7 @@ export const MainProvider = (props) => {
         _getPhotosByAlbumId, _getCommentsByPostId,
         onSubmitComment, onUpdateComment, onDeleteComment,
         currentModalOpen, setCurrentModalOpen,
+        onSubmitPost
       }}
     />
   )

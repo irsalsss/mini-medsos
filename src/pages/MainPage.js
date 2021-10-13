@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Empty, Typography } from 'antd';
+import React, { useEffect, lazy } from 'react';
+import { Button, Empty, Typography } from 'antd';
 
 import AlbumCard from '../components/AlbumCard'
 import { useMainContext } from '../context/MainContext';
@@ -8,6 +8,7 @@ import InputSelect from '../components/InputSelect';
 import RadioGroup from '../components/RadioGroup';
 import PostCard from '../components/PostCard';
 import CenterTitle from '../components/CenterTitle';
+import ModalInputPost from '../components/ModalInputPost';
 
 const { Text } = Typography;
 
@@ -18,13 +19,18 @@ const MainPage = () => {
     onClickCard, onRedirect,
     filterOption, onChangeFilterOption,
     _getAlbumsByUserId, _getPostsByUserId,
+    currentModalOpen, setCurrentModalOpen,
+    onSubmitPost
   } = useMainContext();
 
   const userData = users?.[activeUser - 1]
 
   useEffect(() => {
     _getAlbumsByUserId();
-    _getPostsByUserId();
+
+    if (!posts[activeUser]) {
+      _getPostsByUserId();
+    }
   }, [activeUser])
   
   return (
@@ -65,9 +71,17 @@ const MainPage = () => {
       )}
 
       <CenterTitle title={`List of posts ${userData?.name || ''}`} />
+      <div className='mt-2 d-flex justify-center'>
+        <Button 
+          onClick={() => setCurrentModalOpen({ userData, type: 'modalPost', action: 'create' })} 
+          type="primary"
+        >
+          Create post
+        </Button>
+      </div>
 
       <div className='d-flex justify-center flex-wrap py-2'>
-        {users && posts && posts.map((v) => (
+        {users && posts[activeUser] && posts[activeUser].map((v) => (
           <div key={v.id} className='px-4 py-2'>
             <PostCard 
               postData={v}
@@ -77,9 +91,18 @@ const MainPage = () => {
         ))}
       </div>
 
-      {posts.length === 0 && (
+      {!posts[activeUser] && (
         <Empty className='pt-6' image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}
+
+      <ModalInputPost
+        key='modalPost'
+        isOpen={currentModalOpen?.type === 'modalPost'}
+        onClose={() => setCurrentModalOpen({})}
+        data={currentModalOpen?.data}
+        userData={userData}
+        onSubmit={(body) => onSubmitPost(body, userData, currentModalOpen?.action)}
+      />
     </div>
   )
 }
