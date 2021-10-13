@@ -12,7 +12,7 @@ const PostCard = ({ postData, onClick, comments, onSubmitComment, onUpdateCommen
   return (
     <Card
       hoverable
-      style={{ width: 650 }}
+      className='container-post-card'
     >
       {onClick && (
         <Link
@@ -32,7 +32,7 @@ const PostCard = ({ postData, onClick, comments, onSubmitComment, onUpdateCommen
 
       <div className='pt-2 flex-column d-flex'>
         <Text type="secondary">Post desc: </Text>
-        <Text>
+        <Text className='ellipsis-2-row'>
           {postData.body}
         </Text>
       </div>

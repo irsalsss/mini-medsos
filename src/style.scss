@@ -223,6 +223,18 @@
     cursor: pointer;
 }
 
+.ellipsis-2-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+
+.container-post-card {
+    width: 600px;
+}
+
 @media only screen and (max-width: 600px)  {
     .container-filter {
         display: flex;
@@ -232,10 +244,18 @@
     .wrapper-filter {
         padding-bottom: 0.5rem;
     }
+
+    .container-post-card {
+        width: 400px;
+    }
 }
 
 @media only screen and (max-width: 400px)  {
     .container-photo-card {
         width: 300px !important;
+    }
+
+    .container-post-card {
+        width: 300px;
     }
 }
