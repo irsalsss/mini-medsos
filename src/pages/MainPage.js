@@ -85,6 +85,8 @@ const MainPage = () => {
           <div key={v.id} className='px-4 py-2'>
             <PostCard 
               postData={v}
+              onClickDelete={() => setCurrentModalOpen({ data: v, userData, type: 'modalPost', action: 'delete' })} 
+              onClickEdit={() => setCurrentModalOpen({ data: v, userData, type: 'modalPost', action: 'edit' })}
               onClick={() => onRedirect(`/posts?userId=${v.userId}&postId=${v.id}`)}
             />
           </div>

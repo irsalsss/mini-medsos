@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext, createContext } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import { 
   createPost,
+  editPost,
   getAlbumsByUserId, 
   getCommentsByPostId, 
   getPhotosByAlbumId, 
@@ -128,11 +129,15 @@ export const MainProvider = (props) => {
         body: value,
         postId: Number(postId),
         email: 'irsal@hehehe.com',
-        id: currArr[currArr.length - 1].id + 1
+        id: currArr?.length ? currArr[currArr.length - 1].id + 1 : 1
       }
       const { data } = await postCommentsByPostId(body);
       if (data.id) {
-        temp[postId].push(body);
+        if (currArr?.length) {
+          temp[postId].push(body);
+        } else {
+          temp[postId] = [body];
+        }
         setComments(temp);
       }
     } catch (error) {
@@ -178,11 +183,33 @@ export const MainProvider = (props) => {
     }
   }
 
+  const onEditPost = async(body) => {
+    const userId = body.userId
+    const temp = cloneDeep(posts);
+    const index = temp[userId].findIndex((v) => v.id === body.id);
+    try {
+      const { data } = await editPost(body.id, body);
+      if (data.id) {
+        temp[userId][index] = body;
+        setPosts(temp);
+        successNotif('Success update a post');
+      }
+    } catch (error) {
+      console.error('update-post-error', error)
+      errorNotif('Update post | Something went wrong')
+
+      if (body.id > 100) {
+        temp[userId][index] = body;
+        setPosts(temp);
+      }
+    }
+  }
+
   const onSubmitPost = async(body, userData, type) => {
     if (type === 'create') {
       await onCreatePost(body, userData);
     } else if (type === 'edit') {
-
+      await onEditPost(body);
     } else if (type === 'delete') {
       
     }
@@ -212,7 +239,8 @@ export const MainProvider = (props) => {
         _getPhotosByAlbumId, _getCommentsByPostId,
         onSubmitComment, onUpdateComment, onDeleteComment,
         currentModalOpen, setCurrentModalOpen,
-        onSubmitPost
+        onSubmitPost,
+        postCounter
       }}
     />
   )

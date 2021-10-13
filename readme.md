@@ -1,3 +1,4 @@
+General:
 - Since I really familiar with antd and to save much time, I decided to use it.
 - List of users is part of filter.
 - Each detail user information can be seen by clicking on the user full name.
@@ -13,6 +14,7 @@ Comment:
 Post:
 - Every user can create, edit, delete a post.
 - I created postCounter state to help me define unique id
+- Id more than 100 can't do update to API, so I just handle on client side
 
 
 how to run (node version: v16.4.0): 

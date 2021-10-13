@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Modal, Typography } from 'antd';
 import PropTypes from "prop-types";
 
@@ -20,12 +20,17 @@ const ModalInputPost = ({ isOpen, onSubmit, onClose, data, userData }) => {
     setBody({});
   }
 
+  useEffect(() => {
+    setBody(data);
+  }, [data])
+
   return (
     <Modal 
       title="Modal Post" 
       visible={isOpen} 
       onOk={() => _onSubmit()} 
       onCancel={onClose}
+      destroyOnClose={true}
     >
       <div className='pb-3'>
         <Text type="secondary">User:</Text>
@@ -42,7 +47,7 @@ const ModalInputPost = ({ isOpen, onSubmit, onClose, data, userData }) => {
         <Input
           key={data.id}
           name='title'
-          value={body?.title || ''}
+          defaultValue={data?.title || body?.title || ''}
           onChange={onChange}
         />
       </div>
@@ -52,7 +57,7 @@ const ModalInputPost = ({ isOpen, onSubmit, onClose, data, userData }) => {
         <Input
           key={data.id}
           name='body'
-          value={body?.body || ''}
+          defaultValue={data?.body || body?.body || ''}
           onChange={onChange}
         />
       </div>
