@@ -8,20 +8,36 @@ import './PostCard.scss';
 
 const { Text, Link } = Typography;
 
-const PostCard = ({ postData, onClick, comments, onSubmitComment, onUpdateComment, onDeleteComment }) => {
+const PostCard = ({ 
+  postData, 
+  comments,
+  onClick, onClickDelete, onClickEdit,
+  onSubmitComment, onUpdateComment, onDeleteComment 
+}) => {
   return (
     <Card
       hoverable
       className='container-post-card'
     >
-      {onClick && (
-        <Link
-          onClick={onClick}
-          style={{ position: 'absolute', top: 16, right: 16 }}
-        >
-          View detail
-        </Link>
-      )}
+      <div className='container-action'>
+        {onClick && (
+          <Link onClick={onClick}>
+            View detail
+          </Link>
+        )}
+
+        {onClickEdit && (
+          <Link className='pl-3' onClick={onClickEdit}>
+            Edit
+          </Link>
+        )}
+
+        {onClickDelete && (
+          <Link className='pl-3' onClick={onClickDelete}>
+            Delete
+          </Link>
+        )}
+      </div>
 
       <div className='flex-column d-flex'>
         <Text type="secondary">Post title: </Text>
@@ -73,6 +89,8 @@ PostCard.propTypes = {
   postData: PropTypes.object,
   comments: PropTypes.array,
   onClick: PropTypes.func,
+  onClickDelete: PropTypes.func,
+  onClickEdit: PropTypes.func,
   onSubmitComment: PropTypes.func,
   onUpdateComment: PropTypes.func,
   onDeleteComment: PropTypes.func,
@@ -82,6 +100,8 @@ PostCard.defaultProps = {
   postData: {},
   comments: [],
   onClick: null,
+  onClickDelete: null,
+  onClickEdit: null,
   onSubmitComment: null,
   onUpdateComment: () => {},
   onDeleteComment: () => {},
