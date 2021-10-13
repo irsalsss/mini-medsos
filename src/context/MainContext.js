@@ -25,7 +25,6 @@ export const MainProvider = (props) => {
   const [albums, setAlbums] = useState([]);
   const [photos, setPhotos] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [myPosts, setMyPosts] = useState([]);
   const [comments, setComments] = useState({});
 
   const [currentModalOpen, setCurrentModalOpen] = useState({});
@@ -161,7 +160,7 @@ export const MainProvider = (props) => {
       {...props}
       value={{
         users, albums, photos, comments,
-        myPosts, posts,
+        posts,
         activeUser,
         activeNavbar, handleActiveNavbar,
         filterOption, onChangeFilterOption,
