@@ -8,7 +8,8 @@
     "dev": "webpack serve --open",
     "build": "webpack --mode production",
     "deploy": "serve -s dist",
-    "test": "jest --env=jsdom"
+    "test": "jest --env=jsdom",
+    "heroku-postbuild": "webpack -p"
   },
   "author": "Muhamad Irsal F",
   "license": "ISC",
