@@ -12,7 +12,7 @@
     "build": "webpack --mode production",
     "deploy": "serve -s dist",
     "test": "jest --env=jsdom",
-    "heroku-postbuild": "webpack -p"
+    "heroku-postbuild": "webpack --mode production"
   },
   "author": "Muhamad Irsal F",
   "license": "ISC",
