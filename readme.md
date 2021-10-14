@@ -19,4 +19,4 @@ Post:
 
 how to run (node version: v16.4.0): 
 - npm install
-- npm start
+- npm run dev
