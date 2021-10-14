@@ -20,3 +20,5 @@ Post:
 how to run (node version: v16.4.0): 
 - npm install
 - npm run dev
+
+deploy link: https://irsal-mini-sosmed.herokuapp.com/main
